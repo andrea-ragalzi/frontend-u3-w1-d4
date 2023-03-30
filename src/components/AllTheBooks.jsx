@@ -3,32 +3,41 @@ import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Carousel from 'react-bootstrap/Carousel';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import BookList from "./BookList";
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
 import fantasy from '../data/fantasy.json'
 import history from '../data/history.json'
 import horror from '../data/horror.json'
 import romance from '../data/romance.json'
 import scifi from '../data/scifi.json'
 
-const truncateString = (str, num) => {
-    if (str.length > num) {
-        return str.slice(0, num) + '...';
-    } else {
-        return str;
-    }
-}
 
 class AllTheBooks extends Component {
     state = {
         selectedCategory: fantasy,
+        selectedBooks: fantasy,
         showWallCategory: true,
         showWallBook: false
-    }
-    showBookWall = false
+    };
+
+    filterBookList = (bookList, keyword) => {
+        console.log(bookList, keyword);
+        if (!bookList) {
+            return [];
+        }
+        return (
+            bookList.filter((book) =>
+                book.title.toLowerCase().includes(keyword.toLowerCase())
+            )
+        );
+    };
+
     handleBookClick = (category) => {
         this.setState({
             selectedCategory: category,
+            selectedBooks: category,
             showWallCategory: !this.state.showWallCategory,
             showWallBook: !this.state.showWallBook
         });
@@ -69,27 +78,28 @@ class AllTheBooks extends Component {
                     )}
                 {this.state.showWallBook && (
                     <>
-                        <Button variant="dark" className="my-5 p-4" onClick={() => this.handleBookClick(this.state.selectedCategory)}>
-                            Back to Category
-                        </Button>
-                        <Row className="justify-content-center align-items-center mx-0">
-                            {
-                                this.state.selectedCategory.map(book => {
-                                    return (
-                                        <Col xs={12} sm={6} md={4} lg={3} xl={2} key={book.asin} className="p-0 mx-1 mb-5">
-                                            <Card>
-                                                <Card.Img variant="top" src={book.img} />
-                                                <Card.Body>
-                                                    <Card.Title>{truncateString(book.title, 45)}</Card.Title>
-                                                    <Card.Text>{book.price}</Card.Text>
-                                                    <Button variant="dark">Buy Now</Button>
-                                                </Card.Body>
-                                            </Card>
-                                        </Col>
-                                    )
-                                })
-                            }
+                        <Row className="justify-content-center align-items-center mx-5">
+                            <Col xs={6}>
+                                <Button variant="dark" className="my-5 p-4" onClick={() => this.handleBookClick(this.state.selectedCategory)}>
+                                    Back to Category
+                                </Button>
+                            </Col>
+                            <Col xs={6}>
+                                <InputGroup className="mb-3">
+                                    <Form.Control
+                                        placeholder="Search Title"
+                                        aria-label="Search Title"
+                                        onChange={(event) => {
+                                            this.setState({
+                                                selectedBooks: this.filterBookList(this.state.selectedCategory, event.target.value)
+                                            });
+                                            console.log(this.state.selectedBooks);
+                                        }}
+                                    />
+                                </InputGroup>
+                            </Col>
                         </Row>
+                        <BookList books={this.state.selectedBooks}></BookList>
                         <a className="text-dark backLink" href="#root">Back To Top</a>
                     </>
                 )}
