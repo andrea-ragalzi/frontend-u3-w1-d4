@@ -12,32 +12,26 @@ const truncateString = (str, num) => {
 }
 
 class SingleBook extends Component {
-  state = {
-    book: this.props.book,
-    selected: false
-  };
+    handleBookSelect = () => {
+        this.props.onSelect(this.props.book.asin);
+    }
 
-  handleCardClick = () => {
-    this.setState({ selected: !this.state.selected });
-  }
-
-  render() {
-    const { book } = this.props;
-    const cardClassName = this.state.selected ? 'selected-card' : '';
-
-    return (
-      <Col xs={12} sm={6} md={4} lg={3} xl={2} className="p-0 mx-1 mb-5">
-        <Card className={cardClassName}>
-          <Card.Img variant="top" src={book.img} onClick={this.handleCardClick} />
-          <Card.Body>
-            <Card.Title>{truncateString(book.title, 45)}</Card.Title>
-            <Card.Text>{book.price}</Card.Text>
-            <Button variant="dark">Buy Now</Button>
-          </Card.Body>
-        </Card>
-      </Col>
-    );
-  }
+    render() {
+        const { book, selected } = this.props;
+        return (
+            <Col xs={12} sm={6} md={4} lg={3} xl={2} className="p-0 mx-1 mb-5">
+                <Card onClick={this.handleBookSelect} className={selected ? "selected-card" : ""}>
+                    <Card.Img variant="top" src={book.img} />
+                    <Card.Body>
+                        <Card.Title>{truncateString(book.title, 40)}</Card.Title>
+                        <Card.Text>{book.price}</Card.Text>
+                         
+                        <Button variant="dark">Buy Now</Button>
+                    </Card.Body>
+                </Card>
+            </Col>
+        );
+    }
 }
 
 export default SingleBook;

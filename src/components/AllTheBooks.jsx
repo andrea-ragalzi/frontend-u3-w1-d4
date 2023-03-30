@@ -27,7 +27,7 @@ class AllTheBooks extends Component {
             return [];
         }
         return (
-            bookList.filter((book) =>
+            bookList.filter(book => 
                 book.title.toLowerCase().includes(keyword.toLowerCase())
             )
         );
