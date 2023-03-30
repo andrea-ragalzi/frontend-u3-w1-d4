@@ -23,7 +23,6 @@ class AllTheBooks extends Component {
     };
 
     filterBookList = (bookList, keyword) => {
-        console.log(bookList, keyword);
         if (!bookList) {
             return [];
         }
@@ -93,7 +92,6 @@ class AllTheBooks extends Component {
                                             this.setState({
                                                 selectedBooks: this.filterBookList(this.state.selectedCategory, event.target.value)
                                             });
-                                            console.log(this.state.selectedBooks);
                                         }}
                                     />
                                 </InputGroup>
