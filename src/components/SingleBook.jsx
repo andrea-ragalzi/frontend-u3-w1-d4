@@ -24,8 +24,7 @@ class SingleBook extends Component {
                     <Card.Img variant="top" src={book.img} />
                     <Card.Body>
                         <Card.Title>{truncateString(book.title, 40)}</Card.Title>
-                        <Card.Text>{book.price}</Card.Text>
-                         
+                        <Card.Text>{book.price}</Card.Text>       
                         <Button variant="dark">Buy Now</Button>
                     </Card.Body>
                 </Card>
